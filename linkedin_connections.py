@@ -5,32 +5,56 @@ import plotly.graph_objects as go
 df = pd.read_csv('Connections.csv', skiprows=2)
 
 #stores all company names
-companyData = df.head(20)
+companyData = df.head(100)
 #print(companyData)
 
 #Count amount of occurence of each Company
 #print(companyData.nunique['Company'](axis=2, dropna=True))
 
-companyOccurence = pd.value_counts(companyData.Company)
-companyName = pd.value_counts(companyData.Company).index
+companyOccurence = pd.value_counts(df.Company)
+companyName = pd.value_counts(df.Company).index
 
 #gets company occurence values
+size2 = []
 for test1 in companyOccurence:
-    print(test1)
+    size2.append(test1)
+    #print(test1)
 pass
 
 #gets company names
+size3 = []
 for i in companyName:
-    print(i)
+    size3.append(i)
+    #print(i)
 pass
+
 
 #scatter graph
 fig = go.Figure(data=go.Scatter(
-    x=[1, 2, 3, 4],
-    y=[10, 11, 12, 13],
+    x=size3,
+    y=size2,
     mode='markers',
-    marker=dict(size=[40, 60, 80, 100],
-                color=[0, 1, 2, 3])
-))
+    marker=dict(size=size2,
+                color= '#0b0040', opacity=1)
+)     
+)
 
-fig.show()
+fig.update_traces(marker=dict(
+                              line=dict(width=10,
+                                        color='#0b0040')),
+                  selector=dict(mode='markers'))
+
+fig.update_xaxes(ticklabelposition="inside top", title='Company Names', automargin=True)
+fig.update_yaxes(ticklabelposition="inside top", title='Amount of Connections', automargin=True)
+
+fig.update_layout(
+    title={
+        'text': "Cool Graph",
+        'y':0.92,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'})
+
+
+#fig.show()
+fig.write_html('plot.html' , auto_open=True)
